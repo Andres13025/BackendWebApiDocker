@@ -1,19 +1,21 @@
-# Paso 1: Utiliza la imagen base de ASP.NET Core
+# Etapa base: imagen base de ASP.NET Core
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
-EXPOSE 5243 7068
+EXPOSE 5243
+EXPOSE 7068
 
-# Paso 2: Copia los archivos publicados de la aplicación en la imagen
+# Etapa de compilación
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY . .
+COPY ["WebApiProducer.csproj", "."]
 RUN dotnet restore "WebApiProducer.csproj"
+COPY . .
 RUN dotnet build "WebApiProducer.csproj" -c Release -o /app/build
 
 FROM build AS publish
 RUN dotnet publish "WebApiProducer.csproj" -c Release -o /app/publish
 
-# Paso 3: Configura el contenedor para ejecutar la aplicación cuando se inicie
+# Etapa final
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
