@@ -10,11 +10,6 @@ pipeline {
                 }
             }
         }
-        stage('Test') {
-            steps {
-                // Aquí puedes agregar tus pruebas unitarias o de integración
-            }
-        }
         stage('Deploy') {
             when {
                 branch 'master'
