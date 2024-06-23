@@ -16,8 +16,6 @@ pipeline {
             steps {
                 script {
                     // Construir la imagen Docker usando el Dockerfile en el repositorio
-                    sh 'docker version'
-                    sh 'docker info'
                     sh 'docker build -t $DOCKER_IMAGE .'
                 }
             }
